@@ -18,6 +18,7 @@ module Fastlane
         private_key = params[:private_key]
         publish_type = params[:publish_type]
         gms_apk = params[:gms_apk]
+        gms_aab = params[:gms_aab]
         hms_apk = params[:hms_apk]
 
         # Получение токена
@@ -25,7 +26,13 @@ module Fastlane
         # Создание черновика
         draft_id = Helper::RustoreHelper.create_draft(token, package_name, publish_type)
         # Загрузка апк
-        Helper::RustoreHelper.upload_apk(token, draft_id, false, gms_apk, package_name)
+        unless gms_apk.nil?
+            Helper::RustoreHelper.upload_apk(token, draft_id, false, gms_apk, package_name)
+        end
+        # Загрузка aab
+        unless gms_aab.nil?
+            Helper::RustoreHelper.upload_aab(token, draft_id, gms_aab, package_name)
+        end
         # Если путь до хмс передали, то и его заливаем
         unless hms_apk.nil?
           Helper::RustoreHelper.upload_apk(token, draft_id, true, hms_apk, package_name)
