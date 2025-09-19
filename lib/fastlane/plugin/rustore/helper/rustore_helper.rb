@@ -11,8 +11,18 @@ module Fastlane
         require 'faraday'
         require 'faraday_middleware'
 
+        open_to = Integer(ENV.fetch("RUSTORE_OPEN_TIMEOUT", 30).to_s)
+        read_to = Integer(ENV.fetch("RUSTORE_READ_TIMEOUT", 180).to_s)
+        write_to = Integer(ENV.fetch("RUSTORE_WRITE_TIMEOUT", 180).to_s)
+        
         options = {
-          url: "https://public-api.rustore.ru"
+          url: "https://public-api.rustore.ru",
+          request: {
+            open_timeout: open_to, # время на установку TCP
+            timeout:      read_to, # общий (часто = read)
+            read_timeout: read_to, # явный read (Faraday v2 / Net::HTTP поддерживает)
+            write_timeout: write_to
+          }
         }
 
         logger = Logger.new($stderr)
