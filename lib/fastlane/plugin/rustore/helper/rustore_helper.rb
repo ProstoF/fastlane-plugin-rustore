@@ -109,7 +109,7 @@ module Fastlane
       def self.upload_aab(token, draft_id, file_path, package_name)
         url = "/public/v1/application/#{package_name}/version/#{draft_id}/aab"
         payload = {}
-        payload[:file] = Faraday::Multipart::FilePart.new(file_path, 'application/vnd.android.package-archive')
+        payload[:file] = Faraday::Multipart::FilePart.new(file_path, 'application/octet-stream')
 
         response = connection.post(url) do |req|
           req.headers['Public-Token'] = token
