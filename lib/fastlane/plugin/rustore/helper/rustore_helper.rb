@@ -53,7 +53,7 @@ module Fastlane
           req.body = { keyId: key_id, timestamp: timestamp, signature: signature }
         end
 
-        UI.message("Debug: response #{response.body}")
+        UI.message("Debug: response #{response.body}") if ENV['DEBUG']
 
         response.body["body"]["jwe"]
       end
@@ -66,7 +66,7 @@ module Fastlane
           req.body['publishType'] = publish_type unless publish_type.nil?
         end
 
-        UI.message("Debug: response #{response.body}")
+        UI.message("Debug: response #{response.body}") if ENV['DEBUG']
         if response.body["body"]
           # Если черновика не было, и мы создали новый, здесь будет draftId
           return response.body["body"]
@@ -103,7 +103,7 @@ module Fastlane
           raise "Build with this version code was already uploaded earlier"
         end
 
-        UI.message("Debug: response #{response.body}")
+        UI.message("Debug: response #{response.body}") if ENV['DEBUG']
       end
 
       def self.upload_aab(token, draft_id, file_path, package_name)
@@ -120,7 +120,7 @@ module Fastlane
           raise "Build with this version code was already uploaded earlier"
         end
 
-        UI.message("Debug: response #{response.body}")
+        UI.message("Debug: response #{response.body}") if ENV['DEBUG']
       end
 
       def self.commit_version(token, draft_id, package_name)
@@ -129,7 +129,7 @@ module Fastlane
           req.headers['Public-Token'] = token
         end
 
-        UI.message("Debug: response #{response.body}")
+        UI.message("Debug: response #{response.body}") if ENV['DEBUG']
       end
     end
   end
