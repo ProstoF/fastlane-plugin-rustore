@@ -58,11 +58,14 @@ module Fastlane
         response.body["body"]["jwe"]
       end
 
-      def self.create_draft(token, package_name, publish_type)
+      def self.create_draft(token, package_name, publish_type, min_android_version, developer_contacts)
         url = "/public/v1/application/#{package_name}/version"
         response = connection.post(url) do |req|
           req.headers['Public-Token'] = token
-          req.body = {}
+          req.body = {
+            'minAndroidVersion' => min_android_version,
+            'developerContacts' => developer_contacts
+          }
           req.body['publishType'] = publish_type unless publish_type.nil?
         end
 

@@ -17,6 +17,8 @@ module Fastlane
         key_id = params[:key_id]
         private_key = params[:private_key]
         publish_type = params[:publish_type]
+        min_android_version = params[:min_android_version]
+        developer_contacts = params[:developer_contacts]
         gms_apk = params[:gms_apk]
         gms_aab = params[:gms_aab]
         hms_apk = params[:hms_apk]
@@ -24,7 +26,7 @@ module Fastlane
         # Получение токена
         token = Helper::RustoreHelper.get_token(key_id: key_id, private_key: private_key)
         # Создание черновика
-        draft_id = Helper::RustoreHelper.create_draft(token, package_name, publish_type)
+        draft_id = Helper::RustoreHelper.create_draft(token, package_name, publish_type, min_android_version, developer_contacts)
         # Загрузка апк
         unless gms_apk.nil?
             Helper::RustoreHelper.upload_apk(token, draft_id, false, gms_apk, package_name)
@@ -60,6 +62,16 @@ module Fastlane
                                        env_name: "RUSTORE_PUBLISH_TYPE",
                                        description: "Тип публикации (MANUAL, DELAYED, INSTANTLY). По умолчанию - INSTANTLY",
                                        optional: true),
+          FastlaneCore::ConfigItem.new(key: :min_android_version,
+                                       env_name: "RUSTORE_MIN_ANDROID_VERSION",
+                                       description: "Минимальная версия Android (например, \"8\")",
+                                       optional: false,
+                                       type: String),
+          FastlaneCore::ConfigItem.new(key: :developer_contacts,
+                                       env_name: "RUSTORE_DEVELOPER_CONTACTS",
+                                       description: "Контакты разработчика: хэш с ключами email, website, vkCommunity",
+                                       optional: false,
+                                       type: Hash),
           FastlaneCore::ConfigItem.new(key: :gms_apk,
                                        env_name: "RUSTORE_GMS_APK",
                                        description: "путь до апк с гуглсервисами",
