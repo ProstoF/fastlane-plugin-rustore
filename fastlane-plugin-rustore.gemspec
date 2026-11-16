@@ -21,7 +21,9 @@ Gem::Specification.new do |spec|
   # Don't add a dependency to fastlane or fastlane_re
   # since this would cause a circular dependency
 
-  # spec.add_dependency 'your-dependency', '~> 1.0.0'
+  spec.add_dependency('faraday', '>= 1.10', '< 3')
+  spec.add_dependency('faraday-follow_redirects', '~> 0.3')
+  spec.add_dependency('faraday-multipart', '~> 1.0')
 
   spec.add_development_dependency('bundler')
   spec.add_development_dependency('fastlane', '>= 2.214.0')
