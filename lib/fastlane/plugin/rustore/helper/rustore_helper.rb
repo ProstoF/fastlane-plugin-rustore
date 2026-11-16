@@ -9,7 +9,8 @@ module Fastlane
     class RustoreHelper
       def self.connection
         require 'faraday'
-        require 'faraday_middleware'
+        require 'faraday/multipart'
+        require 'faraday/follow_redirects'
 
         open_to = Integer(ENV.fetch("RUSTORE_OPEN_TIMEOUT", 30).to_s)
         read_to = Integer(ENV.fetch("RUSTORE_READ_TIMEOUT", 180).to_s)
@@ -34,7 +35,7 @@ module Fastlane
           builder.request(:url_encoded)
           builder.response(:json, content_type: /\bjson$/)
           builder.response(:logger, logger)
-          builder.use(FaradayMiddleware::FollowRedirects)
+          builder.response(:follow_redirects)
           builder.adapter(:net_http)
         end
       end
